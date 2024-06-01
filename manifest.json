@@ -1,6 +1,6 @@
 {
   "name": "Half-Bold Reader",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "manifest_version": 3,
   "description": "An extension that applies a reading technique that is (potentially) \"2 times faster\" than regular reading.",
   "action": {

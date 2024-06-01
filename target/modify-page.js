@@ -18,13 +18,16 @@ function modify(node) {
     }
     indices.push(text.length);
     for (var i = 1; i < indices.length; i++) {
-        const boldNode = document.createElement("b");
-        boldNode.textContent = text.substring(indices[i - 1], (indices[i] + indices[i - 1]) / 2);
-        node.parentNode.insertBefore(boldNode, node);
+        const boldText = text.substring(indices[i - 1], (indices[i] + indices[i - 1]) / 2);
+        if (boldText.length > 0) {
+            const boldNode = document.createElement("b");
+            boldNode.textContent = text.substring(indices[i - 1], (indices[i] + indices[i - 1]) / 2);
+            node.parentNode.insertBefore(boldNode, node);
+        }
         var newText = text.substring((indices[i] + indices[i - 1]) / 2, indices[i]);
         while (i < indices.length && indices[i + 1] - indices[i] <= 1) {
             i++;
-            text.substring((indices[i] + indices[i - 1]) / 2, indices[i]);
+            newText += text.substring((indices[i] + indices[i - 1]) / 2, indices[i]);
         }
         const textNode = document.createTextNode(newText);
         if (node.parentNode) {
