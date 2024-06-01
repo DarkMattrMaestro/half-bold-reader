@@ -1,0 +1,14 @@
+{
+  "name": "Half-Bold Reader",
+  "version": "0.0.0.1",
+  "manifest_version": 3,
+  "description": "An extension to make reading web pages \"2 times faster\" (likely untrue).",
+  "content_scripts": [
+    {
+        "matches": [
+          "<all_urls>"
+        ],
+        "js": ["recursive-modify-page.js"]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "module": "CommonJS",
+    "target": "ES6",
+    "sourceMap": true,
+  }
+}

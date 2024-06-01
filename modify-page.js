@@ -1,8 +1,8 @@
 
 
-function isLetter(char) {
-  return char.toLowerCase() != char.toUpperCase()
-}
+// function isLetter(char) {
+//   return char.toLowerCase() != char.toUpperCase()
+// }
 
 var elements = document.getElementsByTagName("p");
 elements = [...elements, ...document.getElementsByTagName("li")];
