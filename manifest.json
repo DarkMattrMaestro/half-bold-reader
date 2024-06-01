@@ -1,14 +1,21 @@
 {
   "name": "Half-Bold Reader",
-  "version": "0.0.0.1",
+  "version": "0.3.0",
   "manifest_version": 3,
-  "description": "An extension to make reading web pages \"2 times faster\" (likely untrue).",
+  "description": "An extension that applies a reading technique that is (potentially) \"2 times faster\" than regular reading.",
+  "action": {
+    "default_title": "Reaload Half-Bold Reader on Page"
+  },
+  "permissions": ["activeTab", "scripting"],
+  "background": {
+    "service_worker": "target/background.js"
+  },
   "content_scripts": [
     {
         "matches": [
           "<all_urls>"
         ],
-        "js": ["recursive-modify-page.js"]
+        "js": ["target/modify-page.js", "target/treewalk-modify-text-nodes.js"]
     }
   ]
 }

@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
     "strict": true,
     "module": "CommonJS",
-    "target": "ES6",
+    "target": "ES2019",
     "sourceMap": true,
+    "outDir": "target",
+    "rootDir": "src"
   }
 }
