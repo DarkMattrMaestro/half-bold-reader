@@ -29,9 +29,6 @@ function recursiveModifyText(element) {
         //console.log(indices)
         //var newHTML = ""
         for (var i = 1; i < indices.length; i++) {
-            if (indices[i] - indices[i - 1] <= 1) {
-                continue;
-            }
             if (text.startsWith("From")) {
                 console.log(indices[i - 1] + " -> " + indices[i]);
                 console.log(text.substring(indices[i - 1], indices[i]));
@@ -40,7 +37,18 @@ function recursiveModifyText(element) {
             var boldNode = document.createElement("b");
             boldNode.textContent = text.substring(indices[i - 1], (indices[i] + indices[i - 1]) / 2);
             element.parentNode.insertBefore(boldNode, element);
-            var textNode = document.createTextNode(text.substring((indices[i] + indices[i - 1]) / 2, indices[i]));
+            if (text.startsWith("From")) {
+                console.log("----____----");
+                console.log(indices[i - 1] + " -> " + indices[i]);
+                console.log(text.substring(indices[i - 1], indices[i]));
+                console.log(indices);
+            }
+            var newText = text.substring((indices[i] + indices[i - 1]) / 2, indices[i]);
+            while (indices[i + 1] - indices[i] <= 1) {
+                i++;
+                text.substring((indices[i] + indices[i - 1]) / 2, indices[i]);
+            }
+            var textNode = document.createTextNode(newText);
             //textNode.textContent = text.substring((indices[i] + indices[i-1]) / 2, indices[i]);
             element.parentNode.insertBefore(textNode, element);
             //newHTML += "<b>" + text.substring(indices[i-1], (indices[i] + indices[i-1]) / 2) + "</b>";
