@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Half-Bold Reader",
+    "description": "Extension name."
+  },
+  "extDescription": {
+    "message": "An extension that applies a reading technique that is (potentially) \"2 times faster\" than regular reading.",
+    "description": "Extension description."
+  },
+  "extActionDefaultTitle": {
+    "message": "Reload Half-Bold Reader on Current Page",
+    "description": "Extension action default title."
+  }
+}

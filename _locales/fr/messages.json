@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Lecteur demi-gras",
+    "description": "Extension name."
+  },
+  "extDescription": {
+    "message": "Une extension qui applique une technique de lecture (potenitellement) « 2 fois plus rapide » que d'habitude.",
+    "description": "Extension description."
+  },
+  "extActionDefaultTitle": {
+    "message": "Éxécuter le lecteur demi-gras sur la page courante",
+    "description": "Extension action default title."
+  }
+}

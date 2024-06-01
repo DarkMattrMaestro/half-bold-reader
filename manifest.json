@@ -1,10 +1,14 @@
 {
-  "name": "Half-Bold Reader",
+  "name": "__MSG_extName__",
   "version": "1.0.0",
   "manifest_version": 3,
-  "description": "An extension that applies a reading technique that is (potentially) \"2 times faster\" than regular reading.",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
+  "icons": {
+    "1024": "icons/half-bold-reader1024x1024.png"
+  },
   "action": {
-    "default_title": "Reaload Half-Bold Reader on Page"
+    "default_title": "__MSG_extActionDefaultTitle__"
   },
   "permissions": ["activeTab", "scripting"],
   "background": {
