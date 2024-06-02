@@ -4,7 +4,7 @@
     "description": "Extension name."
   },
   "extDescription": {
-    "message": "Une extension qui applique une technique de lecture (potenitellement) « 2 fois plus rapide » que d'habitude.",
+    "message": "Une extension qui applique une technique de lecture qui met en gras la première moitié de chaque mot.",
     "description": "Extension description."
   },
   "extActionDefaultTitle": {

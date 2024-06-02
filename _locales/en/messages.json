@@ -4,7 +4,7 @@
     "description": "Extension name."
   },
   "extDescription": {
-    "message": "An extension that applies a reading technique that is (potentially) \"2 times faster\" than regular reading.",
+    "message": "An extension that applies a reading technique consisting of setting the first half of all words bold.",
     "description": "Extension description."
   },
   "extActionDefaultTitle": {
