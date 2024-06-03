@@ -8,4 +8,5 @@
 ### Added
 - Added FR and EN locales.
 - Added `CHANGELOG.md`.
+- Added `LICENSE.md`.
 - Added base functionality.
