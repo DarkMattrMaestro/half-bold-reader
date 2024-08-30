@@ -8,6 +8,10 @@ function isLetter(char: string) {
 
 function modify(node: ChildNode) {
   if (!node.parentNode) { return; }
+
+  // Create parent Span to prevent unwanted gaps between created text containers
+  const parentSpan = document.createElement("span");
+  node.parentNode.insertBefore(parentSpan, node);
   
   const text = node.textContent;
   if (text === null || text.length === 0) { return; }
@@ -24,19 +28,17 @@ function modify(node: ChildNode) {
     if (boldText.length > 0) {
       const boldNode = document.createElement("b");
       boldNode.textContent = text.substring(indices[i-1], (indices[i] + indices[i-1]) / 2);
-      node.parentNode.insertBefore(boldNode, node);
+      parentSpan.appendChild(boldNode);
     }
 
-    var newText = text.substring((indices[i] + indices[i-1]) / 2, indices[i])
+    var newText = text.substring((indices[i] + indices[i-1]) / 2, indices[i]);
     while (i < indices.length && indices[i + 1] - indices[i] <= 1) {
       i++;
-      newText += text.substring((indices[i] + indices[i-1]) / 2, indices[i])
+      newText += text.substring((indices[i] + indices[i-1]) / 2, indices[i]);
     }
 
-    const textNode = document.createTextNode(newText)
+    const textNode = document.createTextNode(newText);
 
-    if (node.parentNode) {
-      node.parentNode.insertBefore(textNode, node);
-    }
+    parentSpan.appendChild(textNode);
   }
 }
