@@ -8,18 +8,27 @@
     "1024": "icons/half-bold-reader1024x1024.png"
   },
   "action": {
-    "default_title": "__MSG_extActionDefaultTitle__"
+    "default_title": "__MSG_extActionDefaultTitle__",
+    "default_popup": "popup/popup.html"
   },
-  "permissions": ["activeTab", "scripting"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
   "background": {
-    "service_worker": "target/background.js"
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
         "matches": [
           "<all_urls>"
         ],
-        "js": ["target/modify-page.js", "target/treewalk-modify-text-nodes.js"]
+        "js": [
+          "scripts/modify-page.js",
+          "scripts/treewalk-modify-text-nodes.js",
+          "scripts/tab-interface.js"
+        ]
     }
   ]
 }

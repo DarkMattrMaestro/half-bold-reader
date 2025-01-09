@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Half-Bold Reader Main Page</title>
+    </head>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            body {
+                width: 10em;
+            }
+            button {
+                background-color: #384b70;
+                border: none;
+                color: #ffe9cf;
+                text-align: center;
+                font-size: 3em;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <button id="emboldenBtn"><b>Embolden</b></button>
+        <h1>Half-Bold Reader</h1>
+        <script defer src="popup.js" type="module"></script>
+        <form id="optionsForm">
+            <label for="startPercent">
+                <input type="number" name="startPercent" id="startPercent" min="0" max="1" maxlength="4" step="0.01" value="0">
+                Percentage at which to start <b>bold</b>.
+            </label>
+            <label for="endPercent">
+                <input type="number" name="endPercent" id="endPercent" min="0" max="1" maxlength="4" step="0.01" value="0">
+                Percentage at which to start <b>bold</b>.
+            </label>
+        </form>
+    </body>
+</html>
