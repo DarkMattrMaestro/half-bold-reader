@@ -1,16 +1,16 @@
 
-const START_PERCENT = 0.0;
-const END_PERCENT = 0.5;
 
-
+// Check if a character is a letter, that is, a character with upper- and lower-case forms
 function isLetter(char: string) {
   return char.toLowerCase() != char.toUpperCase()
 }
 
 
 
-function modify(node: ChildNode) {
+function modify(node: ChildNode, startPercent: number, endPercent: number) {
   if (!node.parentNode) { return; }
+
+  console.log("startPercent:", startPercent, "\nendPercent:", endPercent)
 
   // Create parent Span to prevent unwanted gaps between created text containers
   const parentSpan = document.createElement("span");
@@ -29,14 +29,14 @@ function modify(node: ChildNode) {
   for (var i=1; i < indices.length; i++) {
     const iDiff = indices[i] - indices[i-1];
 
-    if (START_PERCENT > END_PERCENT) { console.error("END_PERCENT must be smaller than START_PERCENT! This is an error in the implementation in code; if you are a user, please report this as a bug."); }
+    if (startPercent > endPercent) { console.error("END_PERCENT must be smaller than START_PERCENT! This is an error in the implementation in code; if you are a user, please report this as a bug."); }
 
 
     // Indices of key parts of the text
     const textPartIndices = [
       Math.floor(indices[i-1]), // Start of first plain-text
-      Math.floor(indices[i-1] + iDiff*START_PERCENT), // End of first plain-text; Start of bold
-      Math.floor(indices[i-1] + iDiff*END_PERCENT), // End of bold; Start of last plain-text
+      Math.floor(indices[i-1] + iDiff*startPercent), // End of first plain-text; Start of bold
+      Math.floor(indices[i-1] + iDiff*endPercent), // End of bold; Start of last plain-text
       Math.ceil(indices[i]) // End of last plain-text
     ]
 
@@ -53,7 +53,6 @@ function modify(node: ChildNode) {
     const boldText = text.substring(textPartIndices[1], textPartIndices[2]);
     if (boldText.length > 0) {
       const boldNode = document.createElement("b");
-      boldNode.textContent = text.substring(indices[i-1], (indices[i] + indices[i-1]) / 2);
       boldNode.textContent = boldText;
       parentSpan.appendChild(boldNode);
     }
@@ -68,12 +67,14 @@ function modify(node: ChildNode) {
 
     // Concatenate all following sequential characters that are not meant to be bold
 
-    var sequentialText = text.substring((indices[i] + indices[i-1]) / 2, indices[i]);
+    var sequentialText = "";
 
-    while (i < indices.length && indices[i + 1] - indices[i] <= 1) {
+    while (i < indices.length - 1 && indices[i + 1] - indices[i] <= 1) {
       i++;
       sequentialText += text.charAt(indices[i]);
     }
+
+    sequentialText += text.charAt(indices[i + 1]);
 
     // Append the end plain text and sequential non-bold characters to the DOM
     const endTextNode = document.createTextNode(endPlainText + sequentialText);

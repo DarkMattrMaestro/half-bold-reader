@@ -1,13 +1,11 @@
 
-
-
 const IGNORED_TAGS = [
   "STYLE",
   "SCRIPT",
 ]
 
 
-function TextNodeTreeWalker() { // https://stackoverflow.com/a/2579869/21416476
+function TextNodeTreeWalker(startPercent: number, endPercent: number) { // https://stackoverflow.com/a/2579869/21416476
   var walker = document.createTreeWalker(
       document.body, 
       NodeFilter.SHOW_TEXT, 
@@ -22,7 +20,7 @@ function TextNodeTreeWalker() { // https://stackoverflow.com/a/2579869/21416476
       continue;
     }
     textNodes.push(node as ChildNode);
-    modify(node as ChildNode);
+    modify(node as ChildNode, startPercent, endPercent);
   }
 
   for (var i = 0; i < textNodes.length; i++) {

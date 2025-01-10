@@ -1,14 +1,19 @@
 
 // In-page cache of the user's options
 const options: {
-  startPercent: Number,
-  endPercent: Number
+  startPercent: number,
+  endPercent: number
 } = {startPercent: 0, endPercent: 0};
 const optionsForm = document.getElementById("optionsForm");
 
-// Immediately persist options changes
+// Immediately persist options changes of startPercent
 (optionsForm as HTMLFormElement).startPercent.addEventListener("change", (event: Event) => {
   options.startPercent = Number((event.target as HTMLInputElement).value);
+  chrome.storage.sync.set({ options });
+});
+// Immediately persist options changes of endPercent
+(optionsForm as HTMLFormElement).endPercent.addEventListener("change", (event: Event) => {
+  options.endPercent = Number((event.target as HTMLInputElement).value);
   chrome.storage.sync.set({ options });
 });
 
@@ -16,6 +21,7 @@ const optionsForm = document.getElementById("optionsForm");
 const data = await chrome.storage.sync.get("options");
 Object.assign(options, data.options);
 (optionsForm as HTMLFormElement).startPercent.value = options.startPercent;
+(optionsForm as HTMLFormElement).endPercent.value = options.endPercent;
 
 
 function getCurrentTab(callback: Function) {
