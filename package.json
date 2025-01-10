@@ -10,6 +10,6 @@
 		"copy-markdown": "copyfiles CHANGELOG.md LICENSE.md README.md target",
 		"copy-manifest": "copyfiles manifest.json target",
 		"copy-all": "npm run copy-src-files && npm run copy-icons && npm run copy-markdown && npm run copy-manifest",
-    "build": "tsc && npm run copy-all"
-  }
+		"build": "tsc && npm run copy-all"
+	}
 }
