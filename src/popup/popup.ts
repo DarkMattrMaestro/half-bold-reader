@@ -1,5 +1,4 @@
 
-
 // In-page cache of the user's options
 const options: {
   startPercent: Number,
@@ -17,6 +16,17 @@ const optionsForm = document.getElementById("optionsForm");
 const data = await chrome.storage.sync.get("options");
 Object.assign(options, data.options);
 (optionsForm as HTMLFormElement).startPercent.value = options.startPercent;
+
+
+function getCurrentTab(callback: Function) {
+  let queryOptions = { active: true, lastFocusedWindow: true };
+
+  chrome.tabs.query(queryOptions, ([tab]) => {
+    if (chrome.runtime.lastError) { console.error(chrome.runtime.lastError); }
+
+    callback(tab);
+  });
+}
 
 
 
