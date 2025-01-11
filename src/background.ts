@@ -1,12 +1,21 @@
 
+import "./scripts/constants"
 
 let options: {
   startPercent: number,
   endPercent: number
-} = {startPercent: 0, endPercent: 0.5};
+} = {
+  startPercent: 0.8,
+  endPercent: 0.9
+};
 
 chrome.management.onEnabled.addListener(() => {
+  chrome.storage.sync.set({ "options": DEFAULT_OPTIONS })
   
+  // // Example getter
+  // chrome.storage.sync.get("options", function(data) {
+  //   console.log(data.options)
+  // })
 });
 
 // Watch for changes to the user's options & apply them
@@ -26,6 +35,9 @@ let data: { [key: string]: any; } = {  };
   }
 })();
 Object.assign(options, data.options);
+
+console.log("Options:")
+console.log(options)
 
 
 

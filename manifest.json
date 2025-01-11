@@ -31,9 +31,9 @@
           "<all_urls>"
         ],
         "js": [
+          "scripts/constants.js",
           "scripts/modify-page.js",
-          "scripts/treewalk-modify-text-nodes.js",
-          "scripts/tab-interface.js"
+          "scripts/treewalk-modify-text-nodes.js"
         ]
     }
   ]
