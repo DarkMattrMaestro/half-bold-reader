@@ -21,6 +21,8 @@ function TextNodeTreeWalker(startPercent: number, endPercent: number) { // https
     }
     textNodes.push(node as ChildNode);
     modify(node as ChildNode, startPercent, endPercent);
+
+    console.log(node)
   }
 
   for (var i = 0; i < textNodes.length; i++) {

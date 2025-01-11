@@ -1,5 +1,5 @@
 
-import "./scripts/constants"
+importScripts('/scripts/constants.js');
 
 let options: {
   startPercent: number,
