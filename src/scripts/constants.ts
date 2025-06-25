@@ -1,63 +1,59 @@
 
-enum MeasurementUnits {
+export enum MeasurementUnits {
   percent,
   characters
 }
 
-enum TextEffectTypes {
+export enum TextEffectTypes {
   bold,
   italic
   //strikethrough,
 }
 
-enum CharacterSets {
+export enum CharacterSets {
   alphabetic,
   numeric,
   alphanumeric
 }
 
-interface ModifierOption {
+export interface ModifierOption {
   start: number,
   startUnit: MeasurementUnits,
   startInclusive: boolean,
   end: number,
   endUnit: MeasurementUnits,
   endInclusive: boolean,
-  effects: TextEffectTypes[],
+  effect: TextEffectTypes,
   groupCharacters: CharacterSets
 }
 
-interface ModifierOptions {
+export interface ModifierOptions {
   modifiers: ModifierOption[]
 }
 
-const DEFAULT_OPTIONS: ModifierOptions = {
+export const DEFAULT_OPTIONS: ModifierOptions = {
   modifiers: [
-        {
-            start: 0,
-            startUnit: MeasurementUnits.percent,
-            startInclusive: true,
-            end: 50,
-            endUnit: MeasurementUnits.percent,
-            endInclusive: true,
-            effects: [
-                TextEffectTypes.bold
-            ],
-            groupCharacters: CharacterSets.alphabetic
-        },
-        {
-            start: 2,
-            startUnit: MeasurementUnits.characters,
-            startInclusive: false,
-            end: 100,
-            endUnit: MeasurementUnits.percent,
-            endInclusive: false,
-            effects: [
-                TextEffectTypes.italic
-            ],
-            groupCharacters: CharacterSets.numeric
-        }
-    ]
+    {
+      start: 0,
+      startUnit: MeasurementUnits.percent,
+      startInclusive: true,
+      end: 50,
+      endUnit: MeasurementUnits.percent,
+      endInclusive: true,
+      effect: TextEffectTypes.bold,
+      groupCharacters: CharacterSets.alphabetic
+    },
+    {
+      start: 2,
+      startUnit: MeasurementUnits.characters,
+      startInclusive: false,
+      end: 100,
+      endUnit: MeasurementUnits.percent,
+      endInclusive: false,
+      effect: TextEffectTypes.italic,
+      groupCharacters: CharacterSets.numeric
+    }
+  ]
 };
 
-const ADDED_ELEMENT_CLASSNAME = "half-bold-reader-added"
+export const ADDED_ELEMENT_CLASSNAME = "half-bold-reader-added"
