@@ -1,7 +1,9 @@
 
 function initiateModification(): void {
+  chrome.storage.sync.set({ "options": DEFAULT_OPTIONS })
+
   chrome.storage.sync.get("options", function(data) { // Get options
-    const options = data.options;
+    const options: ModifierOptions = data.options;
     console.log("Found:")
     console.log(options)
 
@@ -16,7 +18,7 @@ function initiateModification(): void {
       boldElements[i].outerHTML = boldElements[i].innerHTML;
     }
 
-    TextNodeTreeWalker(options.startPercent as number, options.endPercent as number);
+    TextNodeTreeWalker(options.modifiers[0].start / 100 as number, options.modifiers[0].end / 100 as number);
 
     console.log("Finished emboldening page!")
   })

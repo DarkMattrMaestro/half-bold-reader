@@ -18,11 +18,11 @@
     "storage"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service-worker": "background.js"
   },
   "web_accessible_resources": [{
     "matches": ["<all_urls>"],
-    "resources": ["scripts/constants.js"]
+    "resources": ["scripts/*.js"]
    }],
   "content_scripts": [
     {
@@ -30,6 +30,7 @@
           "<all_urls>"
         ],
         "js": [
+          "scripts/constants.js",
           "scripts/modify-page.js",
           "scripts/treewalk-modify-text-nodes.js"
         ]

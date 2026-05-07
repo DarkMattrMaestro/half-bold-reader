@@ -1,22 +1,23 @@
 
-export enum MeasurementUnits {
+
+enum MeasurementUnits {
   percent,
   characters
 }
 
-export enum TextEffectTypes {
+enum TextEffectTypes {
   bold,
   italic
   //strikethrough,
 }
 
-export enum CharacterSets {
+enum CharacterSets {
   alphabetic,
   numeric,
   alphanumeric
 }
 
-export interface ModifierOption {
+interface ModifierOption {
   start: number,
   startUnit: MeasurementUnits,
   startInclusive: boolean,
@@ -27,11 +28,11 @@ export interface ModifierOption {
   groupCharacters: CharacterSets
 }
 
-export interface ModifierOptions {
+interface ModifierOptions {
   modifiers: ModifierOption[]
 }
 
-export const DEFAULT_OPTIONS: ModifierOptions = {
+const DEFAULT_OPTIONS: ModifierOptions = {
   modifiers: [
     {
       start: 0,
@@ -56,4 +57,4 @@ export const DEFAULT_OPTIONS: ModifierOptions = {
   ]
 };
 
-export const ADDED_ELEMENT_CLASSNAME = "half-bold-reader-added"
+const ADDED_ELEMENT_CLASSNAME = "half-bold-reader-added"

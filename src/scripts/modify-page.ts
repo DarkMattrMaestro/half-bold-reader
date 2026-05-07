@@ -46,7 +46,7 @@ function modify(node: ChildNode, startPercent: number, endPercent: number) {
   }
   indices.push(text.length);
 
-  console.log("Incides:", indices)
+  console.log("Indices:", indices)
 
 
   for (var i=0; i < indices.length - 1;) {

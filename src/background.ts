@@ -1,15 +1,11 @@
+alert("aaaaaa")
 
-importScripts('/scripts/constants.js');
-
-let options: {
-  startPercent: number,
-  endPercent: number
-} = {
-  startPercent: 0.8,
-  endPercent: 0.9
+let options: ModifierOptions = {
+  modifiers: []
 };
 
 chrome.management.onEnabled.addListener(() => {
+  alert("Ayayayayaya")
   chrome.storage.sync.set({ "options": DEFAULT_OPTIONS })
   
   // // Example getter

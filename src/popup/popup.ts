@@ -1,7 +1,5 @@
-import { MeasurementUnits, TextEffectTypes, CharacterSets, ModifierOption, ModifierOptions, DEFAULT_OPTIONS, ADDED_ELEMENT_CLASSNAME } from "../scripts/constants.js";
 
 // In-page cache of the user's options
-const options: ModifierOptions = DEFAULT_OPTIONS;
 // const optionsForm = document.getElementById("optionsForm");
 
 // // Immediately persist options changes of startPercent
