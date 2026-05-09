@@ -1,29 +1,31 @@
 
 
 enum MeasurementUnits {
-  percent,
-  characters
+  percent="percent",
+  characters="characters"
 }
 
 enum TextEffectTypes {
-  bold,
-  italic
+  bold="b",
+  italic="i"
   //strikethrough,
 }
 
 enum CharacterSets {
-  alphabetic,
-  numeric,
-  alphanumeric
+  alphabetic="alphabetic",
+  numeric="numeric",
+  alphanumeric="alphanumeric"
+}
+
+interface ModifierIndex {
+  value: number,
+  unit: MeasurementUnits,
+  isInclusive: boolean
 }
 
 interface ModifierOption {
-  start: number,
-  startUnit: MeasurementUnits,
-  startInclusive: boolean,
-  end: number,
-  endUnit: MeasurementUnits,
-  endInclusive: boolean,
+  start: ModifierIndex,
+  end: ModifierIndex,
   effect: TextEffectTypes,
   groupCharacters: CharacterSets
 }
@@ -32,28 +34,24 @@ interface ModifierOptions {
   modifiers: ModifierOption[]
 }
 
+const DEFAULT_OPTION: ModifierOption = {
+  start: {
+    value: 0,
+    unit: MeasurementUnits.percent,
+    isInclusive: true
+  },
+  end: {
+    value: 50,
+    unit: MeasurementUnits.percent,
+    isInclusive: true
+  },
+  effect: TextEffectTypes.bold,
+  groupCharacters: CharacterSets.alphabetic
+}
+
 const DEFAULT_OPTIONS: ModifierOptions = {
   modifiers: [
-    {
-      start: 0,
-      startUnit: MeasurementUnits.percent,
-      startInclusive: true,
-      end: 50,
-      endUnit: MeasurementUnits.percent,
-      endInclusive: true,
-      effect: TextEffectTypes.bold,
-      groupCharacters: CharacterSets.alphabetic
-    },
-    {
-      start: 2,
-      startUnit: MeasurementUnits.characters,
-      startInclusive: false,
-      end: 100,
-      endUnit: MeasurementUnits.percent,
-      endInclusive: false,
-      effect: TextEffectTypes.italic,
-      groupCharacters: CharacterSets.numeric
-    }
+    DEFAULT_OPTION
   ]
 };
 

@@ -46,19 +46,13 @@ label {
     text-decoration: none;
     margin: 0px 0px;
     padding: 0px;
-    cursor: pointer;
-}
 
-.arrow-btn:hover {
-    color: deepskyblue;
-}
+    font-weight: 800;
 
-.arrow-btn:focus {
     outline:none;
-    color: deepskyblue;
 }
 
-.modifier-index {
+.modifier-removal-btn {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -69,7 +63,14 @@ label {
     border-radius: 8px 0px 0px 8px;
     border-width: 1px 0px 1px 1px;
     border-style: solid;
-    border-color: gainsboro
+    border-color: gainsboro;
+
+    cursor: pointer;
+}
+
+.modifier-removal-btn:hover {
+    color: darkblue;
+    background-color: lightcoral;
 }
 
 .modifier-content {
