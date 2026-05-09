@@ -7,46 +7,6 @@ function isLetter(char: string) {
   return char.toLowerCase() != char.toUpperCase()
 }
 
-// function addTextElement(startIndex: number, endIndex: number, isStyled: boolean, style: TextEffectTypes, text: string, span: HTMLElement): HTMLElement | Text | undefined {
-//   if (Math.abs(endIndex - startIndex) < 1) { return; } // Ensure the is text to be added
-
-//   // Get ordered indices
-//   const realStartIndex = Math.min(startIndex, endIndex);
-//   const realEndIndex = Math.max(startIndex, endIndex);
-
-//   // Select the text
-//   var selectedText = text.substring(realStartIndex, realEndIndex)
-
-//   let textNode: HTMLElement | Text;
-
-//   if (isStyled) {
-//     // Add styled element
-//     switch (style) {
-//       case TextEffectTypes.bold: {
-//         textNode = document.createElement("b");
-//         break;
-//       }
-//       case TextEffectTypes.italic: {
-//         textNode = document.createElement("i");
-//         break;
-//       }
-//     }
-    
-//     if (textNode != undefined) {
-//       textNode.textContent = selectedText;
-//     } else {
-//       (textNode as HTMLElement).className = ADDED_ELEMENT_CLASSNAME;
-//     }
-//   } else {
-//     // Add plain-text element
-//     textNode = document.createTextNode(selectedText);
-//   }
-
-//   span.appendChild(textNode);
-
-//   return textNode;
-// }
-
 function toIndex(textLength: number, value: number, unit: MeasurementUnits, isInclusive: boolean): number {
   let index: number;
   switch (unit) {
@@ -86,28 +46,13 @@ function modify(node: ChildNode, options: ModifierOptions) {
   }
   indices.push(text.length);
 
-  console.log("Indices:", indices);
+  // console.log("Indices:", indices);
 
 
   for (var i=0; i < indices.length - 1;) {
     const sectionStartIndex = indices[i] + 1
     const sectionEndIndex = indices[i+1]
     const textLength = Math.abs(sectionEndIndex - sectionStartIndex);
-
-
-    // console.log(`${sectionStartIndex} to ${sectionEndIndex}: "${text.substring(sectionStartIndex, sectionEndIndex)}" -> ${!isLetter(text.substring(sectionStartIndex, sectionEndIndex))}`)
-    // // Add unstyled plaintext
-    // if (i < indices.length - 1 && indices[i + 1] - indices[i] <= 1) {
-    //   preSequentialText += text.charAt(indices[i]);
-    //   i++;
-    //   continue;
-    // }
-
-    // if (preSequentialText.length > 0) {
-    //   const endTextNode = document.createTextNode(preSequentialText);
-    //   parentSpan.appendChild(endTextNode);
-    //   sequentialText = "";
-    // }
 
 
     if (sectionStartIndex != sectionEndIndex) {
@@ -153,7 +98,7 @@ function modify(node: ChildNode, options: ModifierOptions) {
 
       const sortedBoundaryList = [...regionBoundariesSet].sort((a, b) => a - b)
       // console.log("\nregionBoundariesSet: ", regionBoundariesSet)
-      console.log("sorted regionBoundariesSet: ", sortedBoundaryList)
+      // console.log("sorted regionBoundariesSet: ", sortedBoundaryList)
       
       let tally: {[effect in TextEffectTypes]: number} = Object.fromEntries(Object.values(TextEffectTypes).map((value)=> ([value, 0]) )) as {[effect in TextEffectTypes]: number}
       // console.log("\nregionBoundaries: ", regionBoundaries)
@@ -163,8 +108,8 @@ function modify(node: ChildNode, options: ModifierOptions) {
         let currParentElement: HTMLElement | Text = parentSpan;
         for (const possibleEffectName in TextEffectTypes) {
           const possibleEffect: TextEffectTypes = TextEffectTypes[possibleEffectName as keyof typeof TextEffectTypes];
-          console.log(`regionBoundaries[${regionBoundary}]: `, regionBoundaries[regionBoundary])
-          console.log(`regionBoundaries[${regionBoundary}][${possibleEffect}]: `, regionBoundaries[regionBoundary][possibleEffect]??0)
+          // console.log(`regionBoundaries[${regionBoundary}]: `, regionBoundaries[regionBoundary])
+          // console.log(`regionBoundaries[${regionBoundary}][${possibleEffect}]: `, regionBoundaries[regionBoundary][possibleEffect]??0)
           tally[possibleEffect] += regionBoundaries[regionBoundary][possibleEffect]??0;
           if (tally[possibleEffect] > 0) {
             const subEffectElement = document.createElement(possibleEffect);
@@ -173,66 +118,20 @@ function modify(node: ChildNode, options: ModifierOptions) {
             currParentElement = subEffectElement
           }
         }
-        console.log("tally: ", tally)
+        // console.log("tally: ", tally)
 
         if (currParentElement.isEqualNode(parentSpan)) {
-          // if (lastElemAdded != null && (lastElemAdded as HTMLElement).tagName.toLowerCase() == "span") {
-          //   // Join plaintext to previous p element, if it directly precedes the new text
-          //   currParentElement = lastElemAdded;
-          // } else {
-            // Create new span element
-            const pElement = document.createElement("span");
-            pElement.className = ADDED_ELEMENT_CLASSNAME;
-            currParentElement.appendChild(pElement);
-            currParentElement = pElement
-          // }
-
-          // const textNode = document.createTextNode("");
-          // currParentElement.appendChild(textNode);
-          // currParentElement = textNode;
+          // Create unstyled text node
+          const textNode = document.createTextNode(text.substring(regionBoundary, sortedBoundaryList[i + 1]));
+          currParentElement.appendChild(textNode);
+        } else {
+          currParentElement.textContent = text.substring(regionBoundary, sortedBoundaryList[i + 1])
         }
-
-        // console.log("currParentElement: ", currParentElement)
-        // console.log("from ", regionBoundary, " to ", sortedBoundaryList[i + 1])
-        // console.log("text to add: ", text.substring(regionBoundary, sortedBoundaryList[i + 1]))
-        currParentElement.textContent = text.substring(regionBoundary, sortedBoundaryList[i + 1])
-        console.log(currParentElement)
       }
     }
+
+    // Add all following sequential characters that are not meant to be bold as plain text
     
-
-
-    // // Indices of key parts of the text
-    // let textPartIndices;
-    
-    // const centerBold = startPercent < endPercent;
-    // if (centerBold) {
-    //   textPartIndices = [
-    //     Math.floor(startIndex), // Start of first plain-text
-    //     Math.floor(startIndex + iDiff*startPercent), // End of first plain-text; Start of bold
-    //     Math.floor(startIndex + iDiff*endPercent), // End of bold; Start of last plain-text
-    //     Math.floor(endIndex) // End of last plain-text
-    //   ]
-    // } else {
-    //   textPartIndices = [
-    //     Math.floor(startIndex), // Start of first bold
-    //     Math.floor(startIndex + iDiff*endPercent), // End of first bold; Start of plain-text
-    //     Math.floor(startIndex + iDiff*startPercent), // End of plain-text; Start of last bold
-    //     Math.floor(endIndex) // End of last bold
-    //   ]
-    // }
-
-    // // Add start plain-text component
-    // addTextElement(textPartIndices[0], textPartIndices[1], !centerBold, text, parentSpan);
-
-    // // Create bold part of text
-    // addTextElement(textPartIndices[1], textPartIndices[2], centerBold, text, parentSpan);
-
-    // // Add end plain-text component
-    // addTextElement(textPartIndices[2], textPartIndices[3], !centerBold, text, parentSpan);
-
-    // // Add all following sequential characters that are not meant to be bold as plain text
-
     var sequentialText = "";
 
     do {
@@ -279,14 +178,10 @@ function TextNodeTreeWalker(options: ModifierOptions) { // https://stackoverflow
       continue;
     }
     textNodes.push(node as ChildNode);
-
-    // console.log("Content: ", (node as ChildNode).textContent??"");
-    // (node as ChildNode).parentElement!.textContent += (node as ChildNode).textContent??"";
     
-    console.log("\nModifying node: ", node)
+    // console.log("\nModifying node: ", node)
     
     modify(node as ChildNode, options);
-    // (node as ChildNode).remove();
   }
 
   for (var i = 0; i < textNodes.length; i++) {

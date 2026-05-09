@@ -10,9 +10,87 @@
 /*----------------------*/
 
 body {
-    width: 48em;
+    width: 30em;
     text-align: center;
     font-size: 1rem;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    position: sticky;
+    top: 0;
+    align-items: center;
+    height: 40px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+    padding: 0 20px 0 64px;
+    z-index: 100;
+    position: relative;
+    background-image: url(/icons/half-bold-reader32x32.png);
+    background-repeat: no-repeat;
+    background-position: 16px center;
+}
+
+header .title {
+    display: block;
+    text-align: left;
+    align-self: center;
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 16px;
+    color: #555f77;
+    flex-grow: 1;
+
+    /* Disable selection */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+header button.settings {
+    align-self: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background-image: url(/icons/settings.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-color: transparent;
+    outline: none;
+}
+
+.settings-content {
+    margin: 0;
+    padding: 4px;
+    position: relative;
+}
+
+.back-btn {
+    display: block;
+    background-size: 100%;
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    left: 20px;
+    top: 20px;
+    cursor: pointer;
+
+    width: 32px;
+    height: 32px;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-image: url(/icons/back.svg);
+    background-repeat: no-repeat;
+    outline: none;
+}
+
+.back-btn:hover {
+    filter: invert(64%) sepia(76%) saturate(480%) hue-rotate(183deg) brightness(101%) contrast(101%);
 }
 
 label {
@@ -152,6 +230,18 @@ select {
     border-radius: 5px 5px 5px 5px;
 
     padding: 2px 5px 2px 5px;
+}
+
+select:hover:not(:focus), input:hover:not(:focus) {
+    background-color:#ddeeff;
+}
+
+select:hover:not(:focus):not(:disabled) {
+    cursor: pointer;
+}
+
+select:hover:not(:focus):disabled {
+    cursor: not-allowed;
 }
 
 .amount select {

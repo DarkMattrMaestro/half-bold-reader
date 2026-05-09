@@ -17,12 +17,9 @@
     "management",
     "storage"
   ],
-  "background": {
-    "service-worker": "background.js"
-  },
   "web_accessible_resources": [{
     "matches": ["<all_urls>"],
-    "resources": ["scripts/*.js"]
+    "resources": ["scripts/*.js", "icons/half-bold-reader32x32.png", "icons/settings.svg", "icons/back.svg"]
    }],
   "content_scripts": [
     {
