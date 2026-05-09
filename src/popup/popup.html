@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Half-Bold Reader Main Page</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./popup.css">
+    </head>
+    <body>
+        <header>
+            <!-- <img src="/icons/half-bold-reader128x128.png" alt="Half-Bold Reader Logo" width="32px" height="32px"> -->
+            <div class="title">Half-Bold Reader</div>
+            <button class="settings" id="settings-btn" title="settings"></button>
+        </header>
+        <div class="main-content">
+            <button id="emboldenBtn"><b>Apply to active page</b></button>
+        </div>
+        <div class="settings-content" hidden>
+            <button class="back-btn" id="settings-back-btn"></button>
+            <h2>Modifiers</h2>
+            <p>Set the modifications (and their order) to be applied to all of the text on any given web page. The modifiers compound upon each other, executed in order from first to last.</p>
+            
+            <div class="row" id="modifiersList">
+            
+            </div>
+            
+            <button class="" type="submit" id="add-btn">Add Modifier</button>
+        </div>
+        
+        <script defer src="../scripts/constants.js"></script>
+        <script defer src="./popup.js"></script>
+        <script defer src="./ui-navigation.js"></script>
+    </body>
+</html>

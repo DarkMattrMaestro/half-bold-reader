@@ -3,10 +3,13 @@
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
     "strict": true,
-    "module": "CommonJS",
+    "module": "ESNext",
     "target": "ES2019",
     "sourceMap": true,
     "outDir": "target",
-    "rootDir": "src"
+    "rootDir": "src",
+    "types": [
+        "chrome"
+    ]
   }
 }

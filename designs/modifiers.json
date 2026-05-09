@@ -1,0 +1,24 @@
+{
+    "modifiers": [
+        {
+            "start": 0,
+            "startUnit": "percent",
+            "startInclusive": true,
+            "end": 50,
+            "endUnit": "percent",
+            "endInclusive": true,
+            "effect": "bold",
+            "groupCharacters": "alphabetical"
+        },
+        {
+            "start": 2,
+            "startUnit": "characters",
+            "startInclusive": false,
+            "end": 100,
+            "endUnit": "percent",
+            "endInclusive": true,
+            "effect": "italic",
+            "groupCharacters": "numerical"
+        }
+    ]
+}

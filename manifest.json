@@ -1,6 +1,6 @@
 {
   "name": "__MSG_extName__",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "manifest_version": 3,
   "description": "__MSG_extDescription__",
   "default_locale": "en",
@@ -8,18 +8,29 @@
     "1024": "icons/half-bold-reader1024x1024.png"
   },
   "action": {
-    "default_title": "__MSG_extActionDefaultTitle__"
+    "default_title": "__MSG_extActionDefaultTitle__",
+    "default_popup": "popup/popup.html"
   },
-  "permissions": ["activeTab", "scripting"],
-  "background": {
-    "service_worker": "target/background.js"
-  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "management",
+    "storage"
+  ],
+  "web_accessible_resources": [{
+    "matches": ["<all_urls>"],
+    "resources": ["scripts/*.js", "icons/half-bold-reader32x32.png", "icons/settings.svg", "icons/back.svg"]
+   }],
   "content_scripts": [
     {
         "matches": [
           "<all_urls>"
         ],
-        "js": ["target/modify-page.js", "target/treewalk-modify-text-nodes.js"]
+        "js": [
+          "scripts/constants.js",
+          "scripts/modify-page.js",
+          "scripts/treewalk-modify-text-nodes.js"
+        ]
     }
   ]
 }
