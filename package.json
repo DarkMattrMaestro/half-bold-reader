@@ -1,8 +1,8 @@
 {
 	"dependencies": {
 		"@types/chrome": "^0.0.268",
-		"ts-loader": "^9.5.1",
-		"typescript": "^5.4.5"
+		"ts-loader": "^9.5.7",
+		"typescript": "^5.9.3"
 	},
 	"scripts": {
 		"copy-src-files": "copyfiles -u 1 src/**/*.html src/**/*.css src/**/*.js src/**/*.json target",
