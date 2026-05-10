@@ -1,10 +1,24 @@
-#emboldenBtn {
-    background-color: #384b70;
-    border: none;
-    color: #ffe9cf;
+#embolden-btn {
+    margin: 4px;
+    padding: 4px 16px 4px 16px;
+    display: flex;
+    flex: 1 1 auto;
+    flex: 1;
+    background-color:aliceblue;
+    border-color: black;
+    border-width: 2px;
+    color: black;
     text-align: center;
-    font-size: 2em;
-    width: 100%;
+    font-size: 1.5em;
+    border-radius: 8px;
+}
+
+#embolden-btn:hover {
+    background-color: #ddeeff;
+}
+
+#embolden-btn:hover:not(:focus):not(:disabled) {
+    cursor: pointer;
 }
 
 /*----------------------*/
@@ -63,6 +77,15 @@ header button.settings {
     outline: none;
 }
 
+
+.main-content {
+    margin: 0;
+    padding: 8px;
+    position: relative;
+    justify-items: center;
+    align-items: center;
+}
+
 .settings-content {
     margin: 0;
     padding: 4px;
@@ -89,7 +112,7 @@ header button.settings {
     outline: none;
 }
 
-.back-btn:hover {
+.back-btn:hover, header button.settings:hover {
     filter: invert(64%) sepia(76%) saturate(480%) hue-rotate(183deg) brightness(101%) contrast(101%);
 }
 
@@ -159,6 +182,7 @@ label {
     gap: 10px;
 
     margin: 0px;
+    padding: 4px;
     border-radius: 0px 4px 4px 0px;
     border: 1px solid gainsboro;
 }

@@ -194,6 +194,27 @@ function TextNodeTreeWalker(options: ModifierOptions) { // https://stackoverflow
 
 
 
+function clearPageStyling() {
+  { // Remove elements added in previous processing attempts
+    let element;
+    while ((element = document.querySelector(`.${ADDED_ELEMENT_CLASSNAME}`)) != null) {
+      element.outerHTML = element.textContent;
+    }
+    console.log("Removed previously added nodes.")
+  }
+
+  { // Remove text effects
+    const ELEM_TAGS = ["b", "i"]
+    let element;
+    for (const elemTag of ELEM_TAGS) {
+      while ((element = document.querySelector(`${elemTag}`)) != null) {
+        element.outerHTML = element.textContent;
+      }
+    }
+    console.log("Removed styled nodes.")
+  }
+}
+
 
 
 function initiateModification(): void {
@@ -209,20 +230,7 @@ function initiateModification(): void {
     console.log(options)
     console.log("\n\n\n\n")
     
-    // Remove elements added in previous processing attempts
-    for (let element of Array.from(document.getElementsByClassName(ADDED_ELEMENT_CLASSNAME))) {
-      element.outerHTML = element.innerHTML;
-    }
-    console.log("Removed previously added nodes.")
-
-    // Remove text effects
-    const ELEM_TAGS = ["b", "i"]
-    for (const elemTag of ELEM_TAGS) {
-      for (let element of Array.from(document.getElementsByTagName(elemTag))) {
-        element.outerHTML = element.innerHTML;
-      }
-    }
-    console.log("Removed styled nodes.")
+    clearPageStyling();
 
     TextNodeTreeWalker(options);
 

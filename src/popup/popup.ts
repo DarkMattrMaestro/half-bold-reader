@@ -31,7 +31,7 @@ function getCurrentTab(callback: Function) {
 
 
 
-const emboldenBtn = document.getElementById("emboldenBtn");
+const emboldenBtn = document.getElementById("embolden-btn");
 if (emboldenBtn) {
   emboldenBtn.onclick = function() {
     console.log("Make text bold") // TODO: connect to initiate-modification.js
