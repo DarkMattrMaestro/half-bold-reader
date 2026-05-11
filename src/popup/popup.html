@@ -12,6 +12,9 @@
             <button class="settings" id="settings-btn" title="Go to modifier settings"></button>
         </header>
         <div class="main-content">
+            <div class="loading-content" hidden>
+                <div class="loading"></div>
+            </div>
             <button id="embolden-btn"><b>Apply effects</b></button>
             <p id="effect-status-msg">No effects applied</p>
         </div>
@@ -20,9 +23,7 @@
             <h2>Modifiers</h2>
             <p>Set the modifications (and their order) to be applied to all of the text on any given web page. The modifiers compound upon each other, executed in order from first to last.</p>
             
-            <div class="row" id="modifiersList">
-            
-            </div>
+            <div class="row" id="modifiersList"></div>
             
             <button class="" type="submit" id="add-btn" title="Add a modifier">Add Modifier</button>
         </div>

@@ -11,6 +11,8 @@
     text-align: center;
     font-size: 1.5em;
     border-radius: 8px;
+
+    transition: filter 0.5s;
 }
 
 #embolden-btn:hover {
@@ -21,7 +23,12 @@
     cursor: pointer;
 }
 
-/*----------------------*/
+#embolden-btn:disabled {
+    cursor: not-allowed;
+    filter: blur(6px);
+    background-color: lightgrey;
+    border-color: darkgrey;
+}
 
 body {
     width: 30em;
@@ -114,6 +121,47 @@ header button.settings {
 
 .back-btn:hover, header button.settings:hover {
     filter: invert(64%) sepia(76%) saturate(480%) hue-rotate(183deg) brightness(101%) contrast(101%);
+}
+
+#effect-status-msg {
+    margin: 0px;
+}
+
+.loading-content {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+}
+
+@keyframes spin {
+    from {
+        transform: translate(-50%, 0px) rotate(0deg)
+    }
+    to {
+        transform: translate(-50%, 0px) rotate(360deg)
+    }
+}
+
+.loading {
+    animation: spin 2s linear infinite;
+
+    display: block;
+    background-size: 100%;
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    left: 50%;
+    top: -4px;
+    z-index: 10;
+
+    width: 58px;
+    height: 58px;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-image: url(/icons/loading.svg);
+    background-repeat: no-repeat;
+    outline: none;
 }
 
 label {

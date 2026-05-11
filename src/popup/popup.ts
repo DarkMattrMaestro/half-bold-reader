@@ -1,24 +1,4 @@
 
-// In-page cache of the user's options
-// const optionsForm = document.getElementById("optionsForm");
-
-// // Immediately persist options changes of startPercent
-// (optionsForm as HTMLFormElement).startPercent.addEventListener("change", (event: Event) => {
-//   options.modifiers[0].start = Number((event.target as HTMLInputElement).value);
-//   chrome.storage.sync.set({ options });
-// });
-// // Immediately persist options changes of endPercent
-// (optionsForm as HTMLFormElement).endPercent.addEventListener("change", (event: Event) => {
-//   options.modifiers[0].end = Number((event.target as HTMLInputElement).value);
-//   chrome.storage.sync.set({ options });
-// });
-
-// // Initialize the form with the user's option settings
-// const data = await chrome.storage.sync.get("options");
-// Object.assign(options, data.options);
-// (optionsForm as HTMLFormElement).startPercent.value = options.startPercent;
-// (optionsForm as HTMLFormElement).endPercent.value = options.endPercent;
-
 function getCurrentTab(callback: Function) {
   let queryOptions = { active: true, lastFocusedWindow: true };
 
@@ -31,39 +11,44 @@ function getCurrentTab(callback: Function) {
 
 
 
+function processEffectStage(msg: string, isDoneProcessing: boolean) {
+  document.getElementById("effect-status-msg")!.textContent = msg;
+  (document.querySelector(".loading-content") as HTMLElement).hidden = isDoneProcessing;
+  (document.getElementById("embolden-btn") as HTMLButtonElement).disabled = !isDoneProcessing;
+}
+
 const emboldenBtn = document.getElementById("embolden-btn");
 if (emboldenBtn) {
   emboldenBtn.onclick = function() {
     console.log("Make text bold") // TODO: connect to initiate-modification.js
+
+    processEffectStage(`Applying modifiers...`, false);
+
     getCurrentTab((tab: any) => {
-      chrome.scripting.executeScript({
-        target: {tabId: tab.id??0},
-        files: ["scripts/initiate-modification.js"]
-      });
+      chrome.tabs.sendMessage(
+        tab.id??0,
+        {from: 'popup', subject: 'startEffect'},
+        () => { processEffectStage(`Last applied modifiers at ${(new Date()).toLocaleTimeString()}`, true); }
+      )
     })
-  };
+  }
 }
 
-// const modifiersContainer = document.getElementById("modifiersContainer");
-// if (modifiersContainer) {
-//   for (let i = 0; i < options.modifiers.length; i++) {
-//     const modifier = options.modifiers[i]; // Select current modifier
+function initializeEffectLoadingUI(res: {"msg": string, "isDoneProcessing": boolean}) {
+  console.log(res)
+  processEffectStage(res["msg"], res["isDoneProcessing"]);
+}
 
-//     const modifierForm = document.createElement("form");
-//     modifierForm.id = "modifierForm" + i;
-//     modifiersContainer.appendChild(modifierForm);
+// Load from previous state
+getCurrentTab((tab: any) => {
+  processEffectStage(`Applying modifiers...`, false);
 
-//     const startLabel = document.createElement("label");
-//     startLabel.textContent = "modifierForm" + i;
-//     modifiersContainer.appendChild(modifierForm);
-//   }
-// } else {
-//   throw new Error("The \"modifiersContainer\" element does not exist!")
-// }
-
-// export { };
-
-
+  chrome.tabs.sendMessage(
+    tab.id??0,
+    {from: 'popup', subject: 'queryStatus'},
+    initializeEffectLoadingUI
+  )
+})
 
 
 
@@ -119,7 +104,7 @@ function appendModifier(modifier: ModifierOption, index: number) {
         
         <div class="amount">
           <input type="number" class="unit" aria-label="end" data-position="end" maxlength="4" size=2 value="${modifier.end.value}">
-          <select class="unit" data-position="end" name="">
+          <select class="unit" data-position="end">
             <option ${modifier.end.unit == MeasurementUnits.percent ? "selected" : ""} value="percent">%</option>
             <option ${modifier.end.unit == MeasurementUnits.characters ? "selected" : ""} value="characters">characters</option>
           </select>

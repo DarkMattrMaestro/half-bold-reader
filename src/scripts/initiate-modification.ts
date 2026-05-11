@@ -1,19 +1,19 @@
 
-/// <reference path="./constants.ts">
-
+let currMsg = "No effects applied";
+let isDoneProcessing = true;
 
 // Check if a character is a letter, that is, a character with upper- and lower-case forms
 function isLetter(char: string) {
   return char.toLowerCase() != char.toUpperCase()
 }
 
-function toIndex(textLength: number, value: number, unit: MeasurementUnits, isInclusive: boolean): number {
+function toIndex(textLength: number, value: number, unit: MeasurementUnits, isInclusive: boolean, isStart: boolean): number {
   let index: number;
   switch (unit) {
     case MeasurementUnits.characters: {
       index = value;
       // Compensate for inclusivity
-      if (!isInclusive) { index--; }
+      if (!isInclusive == !isStart) { index--; }
       break;
     }
     case MeasurementUnits.percent: {
@@ -64,10 +64,12 @@ function modify(node: ChildNode, options: ModifierOptions) {
         [sectionEndIndex]: {}
       };
       for (let option of options.modifiers) {
-        let startIndex = sectionStartIndex + toIndex(textLength, option.start.value, option.start.unit, option.start.isInclusive);
-        let endIndex = sectionStartIndex + toIndex(textLength, option.end.value, option.end.unit, option.end.isInclusive);
+        let startIndex = sectionStartIndex + toIndex(textLength, option.start.value, option.start.unit, option.start.isInclusive, true);
+        let endIndex = sectionStartIndex + toIndex(textLength, option.end.value, option.end.unit, option.end.isInclusive, false);
         startIndex = Math.min(Math.max(sectionStartIndex, startIndex), sectionEndIndex)
         endIndex = Math.min(Math.max(sectionStartIndex, endIndex), sectionEndIndex)
+
+        if (startIndex > endIndex) { continue; }
 
         // Add start region boundary
         if (startIndex in regionBoundaries) {
@@ -200,25 +202,28 @@ function clearPageStyling() {
     while ((element = document.querySelector(`.${ADDED_ELEMENT_CLASSNAME}`)) != null) {
       element.outerHTML = element.textContent;
     }
-    console.log("Removed previously added nodes.")
+    // console.log("Removed previously added nodes.")
   }
 
   { // Remove text effects
-    const ELEM_TAGS = ["b", "i"]
+    const ELEM_TAGS = ["b", "i", "strong", "em", "u"]
     let element;
     for (const elemTag of ELEM_TAGS) {
       while ((element = document.querySelector(`${elemTag}`)) != null) {
         element.outerHTML = element.textContent;
       }
     }
-    console.log("Removed styled nodes.")
+    // console.log("Removed styled nodes.")
   }
 }
 
 
 
-function initiateModification(): void {
+function initiateModification(response: any): void {
   console.log("Default Options: ", DEFAULT_OPTIONS)
+
+  currMsg = `Applying modifiers...`;
+  isDoneProcessing = false;
 
   chrome.storage.sync.get("options", function(data) { // Get options
     let options: ModifierOptions = data.options;
@@ -226,16 +231,32 @@ function initiateModification(): void {
       chrome.storage.sync.set({ "options": DEFAULT_OPTIONS })
       options = DEFAULT_OPTIONS
     }
-    console.log("Found options:")
-    console.log(options)
-    console.log("\n\n\n\n")
+    // console.log("Found options:")
+    // console.log(options)
+    // console.log("\n\n\n\n")
     
     clearPageStyling();
 
     TextNodeTreeWalker(options);
 
-    console.log("Finished emboldening page!")
+    // console.log("Finished emboldening page!")
+
+    currMsg = `Last applied modifiers at ${(new Date()).toLocaleTimeString()}`;
+    isDoneProcessing = true;
+
+    response();
   })
 }
 
-initiateModification();
+chrome.runtime.onMessage.addListener((msg, sender, response) => {
+  if (msg.from === 'popup' && msg.subject === 'startEffect') {
+    (async () => { initiateModification(response); })();
+    return true;
+  } else if (msg.from === 'popup' && msg.subject === 'queryStatus') {
+    console.log("Current State (Queried):", {"msg": currMsg, "isDoneProcessing": isDoneProcessing})
+    response({"msg": currMsg, "isDoneProcessing": isDoneProcessing})
+    return;
+  }
+
+  return;
+});
