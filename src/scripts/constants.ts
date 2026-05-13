@@ -1,14 +1,15 @@
 
 
 enum MeasurementUnits {
-  percent="percent",
+  percent="%",
   characters="characters"
 }
 
 enum TextEffectTypes {
   bold="b",
-  italic="i"
-  //strikethrough,
+  italic="i",
+  underline="u",
+  strikethrough="del",
 }
 
 enum CharacterSets {

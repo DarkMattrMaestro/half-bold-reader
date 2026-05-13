@@ -46,8 +46,6 @@ function modify(node: ChildNode, options: ModifierOptions) {
   }
   indices.push(text.length);
 
-  // console.log("Indices:", indices);
-
 
   for (var i=0; i < indices.length - 1;) {
     const sectionStartIndex = indices[i] + 1
@@ -64,8 +62,8 @@ function modify(node: ChildNode, options: ModifierOptions) {
         [sectionEndIndex]: {}
       };
       for (let option of options.modifiers) {
-        let startIndex = sectionStartIndex + toIndex(textLength, option.start.value, option.start.unit, option.start.isInclusive, true);
-        let endIndex = sectionStartIndex + toIndex(textLength, option.end.value, option.end.unit, option.end.isInclusive, false);
+        let startIndex = sectionStartIndex + toIndex(textLength, option.start.value, MeasurementUnits[option.start.unit as keyof typeof MeasurementUnits], option.start.isInclusive, true);
+        let endIndex = sectionStartIndex + toIndex(textLength, option.end.value, MeasurementUnits[option.end.unit as keyof typeof MeasurementUnits], option.end.isInclusive, false);
         startIndex = Math.min(Math.max(sectionStartIndex, startIndex), sectionEndIndex)
         endIndex = Math.min(Math.max(sectionStartIndex, endIndex), sectionEndIndex)
 
@@ -96,22 +94,14 @@ function modify(node: ChildNode, options: ModifierOptions) {
         regionBoundariesSet.add(endIndex);
       }
 
-      // console.log("regionBoundaries: ", regionBoundaries)
-
       const sortedBoundaryList = [...regionBoundariesSet].sort((a, b) => a - b)
-      // console.log("\nregionBoundariesSet: ", regionBoundariesSet)
-      // console.log("sorted regionBoundariesSet: ", sortedBoundaryList)
       
       let tally: {[effect in TextEffectTypes]: number} = Object.fromEntries(Object.values(TextEffectTypes).map((value)=> ([value, 0]) )) as {[effect in TextEffectTypes]: number}
-      // console.log("\nregionBoundaries: ", regionBoundaries)
-      // console.log("sortedBoundaryList: ", sortedBoundaryList)
       for (let i = 0; i < sortedBoundaryList.length - 1; i++) {
         const regionBoundary = sortedBoundaryList[i];
         let currParentElement: HTMLElement | Text = parentSpan;
         for (const possibleEffectName in TextEffectTypes) {
           const possibleEffect: TextEffectTypes = TextEffectTypes[possibleEffectName as keyof typeof TextEffectTypes];
-          // console.log(`regionBoundaries[${regionBoundary}]: `, regionBoundaries[regionBoundary])
-          // console.log(`regionBoundaries[${regionBoundary}][${possibleEffect}]: `, regionBoundaries[regionBoundary][possibleEffect]??0)
           tally[possibleEffect] += regionBoundaries[regionBoundary][possibleEffect]??0;
           if (tally[possibleEffect] > 0) {
             const subEffectElement = document.createElement(possibleEffect);
@@ -120,7 +110,6 @@ function modify(node: ChildNode, options: ModifierOptions) {
             currParentElement = subEffectElement
           }
         }
-        // console.log("tally: ", tally)
 
         if (currParentElement.isEqualNode(parentSpan)) {
           // Create unstyled text node
@@ -202,7 +191,6 @@ function clearPageStyling() {
     while ((element = document.querySelector(`.${ADDED_ELEMENT_CLASSNAME}`)) != null) {
       element.outerHTML = element.textContent;
     }
-    // console.log("Removed previously added nodes.")
   }
 
   { // Remove text effects
@@ -213,15 +201,12 @@ function clearPageStyling() {
         element.outerHTML = element.textContent;
       }
     }
-    // console.log("Removed styled nodes.")
   }
 }
 
 
 
 function initiateModification(response: any): void {
-  console.log("Default Options: ", DEFAULT_OPTIONS)
-
   currMsg = `Applying modifiers...`;
   isDoneProcessing = false;
 
@@ -239,8 +224,6 @@ function initiateModification(response: any): void {
 
     TextNodeTreeWalker(options);
 
-    // console.log("Finished emboldening page!")
-
     currMsg = `Last applied modifiers at ${(new Date()).toLocaleTimeString()}`;
     isDoneProcessing = true;
 
@@ -253,7 +236,6 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
     (async () => { initiateModification(response); })();
     return true;
   } else if (msg.from === 'popup' && msg.subject === 'queryStatus') {
-    console.log("Current State (Queried):", {"msg": currMsg, "isDoneProcessing": isDoneProcessing})
     response({"msg": currMsg, "isDoneProcessing": isDoneProcessing})
     return;
   }
