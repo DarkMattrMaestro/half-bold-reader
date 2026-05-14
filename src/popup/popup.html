@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Half-Bold Reader Main Page</title>
+        <title data-locale="mainPage">Half-Bold Reader Main Page</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="./popup.css">
     </head>
     <body>
         <header>
-            <!-- <img src="/icons/half-bold-reader128x128.png" alt="Half-Bold Reader Logo" width="32px" height="32px"> -->
-            <div class="title">Half-Bold Reader</div>
-            <button class="settings" id="settings-btn" title="settings"></button>
+            <div class="title" data-locale="extName">Half-Bold Reader</div>
+            <button class="settings" id="settings-btn" title="Go to modifier settings"></button>
         </header>
         <div class="main-content">
-            <button id="emboldenBtn"><b>Apply to active page</b></button>
+            <div class="loading-content" hidden>
+                <div class="loading"></div>
+            </div>
+            <button id="embolden-btn"><b data-locale="apply">Apply effects</b></button>
+            <p id="effect-status-msg" data-locale="noEffectStatus">No effects applied</p>
+        </div>
+        <div class="refresh-error-content" hidden>
+            <h2 data-locale="refreshTitle">Error: Try refreshing the page</h2>
+            <p data-locale="refreshMsg">If refreshing the webpage does not solve this issue, the webpage cannot be modified by this extension. The browser's settings is one such page.</p>
         </div>
         <div class="settings-content" hidden>
-            <button class="back-btn" id="settings-back-btn"></button>
-            <h2>Modifiers</h2>
-            <p>Set the modifications (and their order) to be applied to all of the text on any given web page. The modifiers compound upon each other, executed in order from first to last.</p>
+            <button class="back-btn" id="settings-back-btn" title="Back to main menu"></button>
+            <h2 data-locale="noEffectStatus">Modifiers</h2>
+            <p data-locale="modifierMsg">Set the modifications (and their order) to be applied to all of the text on any given web page. The modifiers compound upon each other, executed in order from first to last.</p>
             
-            <div class="row" id="modifiersList">
+            <div class="row" id="modifiersList"></div>
             
-            </div>
-            
-            <button class="" type="submit" id="add-btn">Add Modifier</button>
+            <button class="" type="submit" id="add-btn" title="Add a modifier" data-locale="addModifier">Add Modifier</button>
         </div>
         
         <script defer src="../scripts/constants.js"></script>

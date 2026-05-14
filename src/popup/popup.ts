@@ -1,23 +1,10 @@
 
-// In-page cache of the user's options
-// const optionsForm = document.getElementById("optionsForm");
+// HTML Localization
+document.querySelectorAll("[data-locale]").forEach(elem => {
+  (elem as HTMLElement).innerText = chrome.i18n.getMessage(elem.getAttribute("data-locale")!)
+})
 
-// // Immediately persist options changes of startPercent
-// (optionsForm as HTMLFormElement).startPercent.addEventListener("change", (event: Event) => {
-//   options.modifiers[0].start = Number((event.target as HTMLInputElement).value);
-//   chrome.storage.sync.set({ options });
-// });
-// // Immediately persist options changes of endPercent
-// (optionsForm as HTMLFormElement).endPercent.addEventListener("change", (event: Event) => {
-//   options.modifiers[0].end = Number((event.target as HTMLInputElement).value);
-//   chrome.storage.sync.set({ options });
-// });
 
-// // Initialize the form with the user's option settings
-// const data = await chrome.storage.sync.get("options");
-// Object.assign(options, data.options);
-// (optionsForm as HTMLFormElement).startPercent.value = options.startPercent;
-// (optionsForm as HTMLFormElement).endPercent.value = options.endPercent;
 
 function getCurrentTab(callback: Function) {
   let queryOptions = { active: true, lastFocusedWindow: true };
@@ -31,43 +18,60 @@ function getCurrentTab(callback: Function) {
 
 
 
-const emboldenBtn = document.getElementById("emboldenBtn");
-if (emboldenBtn) {
-  emboldenBtn.onclick = function() {
-    console.log("Make text bold") // TODO: connect to initiate-modification.js
-    getCurrentTab((tab: any) => {
-      chrome.scripting.executeScript({
-        target: {tabId: tab.id??0},
-        files: ["scripts/initiate-modification.js"]
-      });
-    })
-  };
+function processEffectStage(msg: string, isDoneProcessing: boolean) {
+  document.getElementById("effect-status-msg")!.textContent = msg;
+  (document.querySelector(".loading-content") as HTMLElement).hidden = isDoneProcessing;
+  (document.getElementById("embolden-btn") as HTMLButtonElement).disabled = !isDoneProcessing;
 }
 
-// const modifiersContainer = document.getElementById("modifiersContainer");
-// if (modifiersContainer) {
-//   for (let i = 0; i < options.modifiers.length; i++) {
-//     const modifier = options.modifiers[i]; // Select current modifier
+const emboldenBtn = document.getElementById("embolden-btn");
+if (emboldenBtn) {
+  emboldenBtn.onclick = function() {
+    processEffectStage(chrome.i18n.getMessage("applyingModifiers"), false);
 
-//     const modifierForm = document.createElement("form");
-//     modifierForm.id = "modifierForm" + i;
-//     modifiersContainer.appendChild(modifierForm);
+    getCurrentTab((tab: any) => {
+      chrome.tabs.sendMessage(
+        tab.id??0,
+        {from: 'popup', subject: 'startEffect'},
+        () => { processEffectStage(chrome.i18n.getMessage("lastApplied", (new Date()).toLocaleTimeString()), true); }
+      )
+    })
+  }
+}
 
-//     const startLabel = document.createElement("label");
-//     startLabel.textContent = "modifierForm" + i;
-//     modifiersContainer.appendChild(modifierForm);
-//   }
-// } else {
-//   throw new Error("The \"modifiersContainer\" element does not exist!")
-// }
+function initializeEffectLoadingUI(res: {"msg": string, "isDoneProcessing": boolean}) {
+  if (!chrome.runtime.lastError) {
+    processEffectStage(res["msg"], res["isDoneProcessing"]);
+  } else {
+    (document.getElementsByClassName("refresh-error-content")[0] as HTMLElement).hidden = false;
+    (document.getElementsByClassName("main-content")[0] as HTMLElement).hidden = true;
+    (document.getElementsByClassName("settings-content")[0] as HTMLElement).hidden = true;
+  }
+}
 
-// export { };
+// Load from previous state
+getCurrentTab((tab: any) => {
+  processEffectStage(`${chrome.i18n.getMessage("applyingModifiers")}`, false);
 
-
+  chrome.tabs.sendMessage(
+    tab.id??0,
+    {from: 'popup', subject: 'queryStatus'},
+    initializeEffectLoadingUI
+  )
+})
 
 
 
 /////////////////////////////////
+
+function optionChoices(realValue: any, enumType: any) {
+  let res = "";
+  for (let value in enumType) {
+    console.log(`<option \${${realValue} == ${enumType[value as keyof typeof enumType]} ? "selected" : ""} value="${value}">${chrome.i18n.getMessage(value)}</option>`)
+    res += `<option ${realValue == enumType[value as keyof typeof enumType] ? "selected" : ""} value="${value}">${chrome.i18n.getMessage(value)}</option>`
+  };
+  return res
+}
 
 
 
@@ -81,28 +85,24 @@ function appendModifier(modifier: ModifierOption, index: number) {
     <div class="modifier-content">
       <div class="modifier-options">
         <div class="option">
-          <label for="effect">Effect:</label>
+          <label for="effect">${chrome.i18n.getMessage("selectEffect")}</label>
           <select class="effect" name="effect">
-            <option ${modifier.effect == TextEffectTypes.bold ? "selected" : ""}>bold</option>
-            <option ${modifier.effect == TextEffectTypes.italic ? "selected" : ""}>italic</option>
+            ${optionChoices(modifier.effect, TextEffectTypes)}
           </select>
         </div>
         <div class="option">
-          <label for="characters">Characters:</label>
+          <label for="characters">${chrome.i18n.getMessage("selectCharacters")}</label>
           <select class="group-characters" name="characters" disabled>
-            <option ${modifier.groupCharacters == CharacterSets.alphabetic ? "selected" : ""}>alphabetic</option>
-            <option ${modifier.groupCharacters == CharacterSets.numeric ? "selected" : ""}>numeric</option>
-            <option ${modifier.groupCharacters == CharacterSets.alphanumeric ? "selected" : ""}>alphanumeric</option>
+            ${optionChoices(modifier.groupCharacters, CharacterSets)}
           </select>
         </div>
       </div>
 
       <div class="effect-range">
-        <div class="amount">
-          <input type="number" class="" aria-label="start" data-position="start" maxlength="4" size=2 value="${modifier.start.value}">
-          <select class="unit" data-position="start">
-            <option ${modifier.start.unit == MeasurementUnits.percent ? "selected" : ""}>%</option>
-            <option ${modifier.start.unit == MeasurementUnits.characters ? "selected" : ""}>characters</option>
+        <div class="amount" data-position="start">
+          <input type="number" class="" aria-label="start" maxlength="4" size=2 value="${modifier.start.value}">
+          <select class="unit">
+            ${optionChoices(modifier.start.unit, MeasurementUnits)}
           </select>
         </div>
         <select class="is-inclusive" data-position="start">
@@ -117,11 +117,10 @@ function appendModifier(modifier: ModifierOption, index: number) {
           <option ${modifier.end.isInclusive ? "selected" : ""}>&le;</option>
         </select>
         
-        <div class="amount">
-          <input type="number" class="unit" aria-label="end" data-position="end" maxlength="4" size=2 value="${modifier.end.value}">
-          <select class="unit" data-position="end" name="">
-            <option ${modifier.end.unit == MeasurementUnits.percent ? "selected" : ""} value="percent">%</option>
-            <option ${modifier.end.unit == MeasurementUnits.characters ? "selected" : ""} value="characters">characters</option>
+        <div class="amount" data-position="end">
+          <input type="number" class="unit" aria-label="end" maxlength="4" size=2 value="${modifier.end.value}">
+          <select class="unit">
+            ${optionChoices(modifier.end.unit, MeasurementUnits)}
           </select>
         </div>
       </div>
@@ -133,6 +132,8 @@ function appendModifier(modifier: ModifierOption, index: number) {
 const hiddenSpan = document.createElement("span");
 hiddenSpan.id = "hidden-span";
 document.body.appendChild(hiddenSpan);
+
+document.getElementById("add-btn")?.addEventListener("click", function(evt) { addDefaultModifier(); })
 
 function getParentData(element: HTMLElement, dataName: string): string | null {
   let parent: HTMLElement = element;
@@ -156,10 +157,10 @@ function getPosition(element: HTMLElement): string | null {
 }
 
 function loadOptionsList() {
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: ModifierOptions = data.options;
-    if (options == undefined) {
-      chrome.storage.sync.set({ "options": DEFAULT_OPTIONS })
+    if (options === undefined) {
+      chrome.storage.local.set({ "options": DEFAULT_OPTIONS })
       options = DEFAULT_OPTIONS
     }
 
@@ -210,13 +211,11 @@ function loadOptionsList() {
           break;
         }
       }
-      // selects[i].addEventListener("input", function(evt) { updateStorage(parseInt(this.value), getIndex(inputs[i])!, this.name, "value"); });
     }
 
     for (const btn of document.getElementsByClassName("modifier-removal-btn")) {
       (btn as HTMLElement).addEventListener("click", function(evt) { deleteModifier(getIndex(this)!); })
     }
-    document.getElementById("add-btn")?.addEventListener("click", function(evt) { addDefaultModifier(); })
   })
 }
 
@@ -230,14 +229,14 @@ function resizeInput(input: HTMLInputElement) {
 }
 
 function resizeSelect(select: HTMLSelectElement) {
-  hiddenSpan.textContent = select.value;
+  hiddenSpan.textContent = select.options[select.selectedIndex].text;
   select.style.width = hiddenSpan.offsetWidth + 5 + 2*5 + "px";
 }
 
 
 
 function deleteModifier(index: number) {
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: ModifierOptions | undefined = data.options;
     if (options == undefined) {
       options = DEFAULT_OPTIONS;
@@ -245,16 +244,15 @@ function deleteModifier(index: number) {
 
     options.modifiers.splice(index, 1);
 
-    chrome.storage.sync.set({ "options": options })
+    chrome.storage.local.set({ "options": options })
 
-    // window.location.reload();
     loadOptionsList()
   })
 }
 
 
 function addDefaultModifier() {
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: ModifierOptions | undefined = data.options;
     if (options == undefined) {
       options = DEFAULT_OPTIONS;
@@ -262,20 +260,20 @@ function addDefaultModifier() {
 
     options.modifiers.push(DEFAULT_OPTION);
 
-    chrome.storage.sync.set({ "options": options })
+    chrome.storage.local.set({ "options": options })
 
-    // window.location.reload();
     loadOptionsList()
   })
 }
 
 
 function updateStorage(value: any, index: number, firstKey: string, secondKey?: string) {
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: any = data.options;
     if (options == undefined) {
       options = DEFAULT_OPTIONS
     }
+
 
     if (secondKey === undefined) {
       options.modifiers[index][firstKey] = value
@@ -283,7 +281,7 @@ function updateStorage(value: any, index: number, firstKey: string, secondKey?: 
       options.modifiers[index][firstKey][secondKey] = value
     }
 
-    console.log(options)
-    chrome.storage.sync.set({ "options": options })
+    // console.log(options)
+    chrome.storage.local.set({ "options": options })
   })
 }

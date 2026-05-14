@@ -13,24 +13,21 @@
   },
   "permissions": [
     "activeTab",
-    "scripting",
-    "management",
     "storage"
   ],
   "web_accessible_resources": [{
     "matches": ["<all_urls>"],
-    "resources": ["scripts/*.js", "icons/half-bold-reader32x32.png", "icons/settings.svg", "icons/back.svg"]
-   }],
-  "content_scripts": [
+    "resources": ["scripts/*.js", "icons/half-bold-reader32x32.png", "icons/settings.svg", "icons/back.svg", "icons/loading.svg"]
+    }],
+    "content_scripts": [
     {
-        "matches": [
-          "<all_urls>"
-        ],
-        "js": [
-          "scripts/constants.js",
-          "scripts/modify-page.js",
-          "scripts/treewalk-modify-text-nodes.js"
-        ]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "scripts/constants.js",
+        "scripts/initiate-modification.js"
+      ]
     }
   ]
 }
