@@ -10,5 +10,71 @@
   "extActionDefaultTitle": {
     "message": "Reload Half-Bold Reader on Current Page",
     "description": "Extension action default title."
+  },
+  "mainPage": {
+    "message": "Half-Bold Reader Main Page"
+  },
+  "apply": {
+    "message": "Apply effects"
+  },
+  "noEffectStatus": {
+    "message": "No effects applied"
+  },
+  "modifiers": {
+    "message": "Modifiers"
+  },
+  "modifierMsg": {
+    "message": "Set the modifications to be applied to the text on a given web page. Modifiers compound upon each other. Characters are 1-indexed."
+  },
+  "addModifier": {
+    "message": "Add Modifier"
+  },
+  "selectEffect": {
+    "message": "Effect:"
+  },
+  "selectCharacters": {
+    "message": "Characters:"
+  },
+  "applyingModifiers": {
+    "message": "Applying modifiers..."
+  },
+  "lastApplied": {
+    "message": "Last applied modifiers at $TIME$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "11:15:00 a.m."
+      }
+    }
+  },
+
+  "bold": {
+    "message": "bold"
+  },
+  "italic": {
+    "message": "italic"
+  },
+  "underline": {
+    "message": "underline"
+  },
+  "strikethrough": {
+    "message": "strikethrough"
+  },
+
+  "percent": {
+    "message": "%"
+  },
+  "characters": {
+    "message": "characters"
+  },
+
+  "alphabetic": {
+    "message": "alphabetic"
+  },
+  "numeric": {
+    "message": "numeric"
+  },
+  "alphanumeric": {
+    "message": "alphanumeric"
   }
 }

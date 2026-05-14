@@ -1,5 +1,5 @@
 
-let currMsg = "No effects applied";
+let currMsg = chrome.i18n.getMessage("noEffectStatus");
 let isDoneProcessing = true;
 
 // Check if a character is a letter, that is, a character with upper- and lower-case forms
@@ -207,13 +207,13 @@ function clearPageStyling() {
 
 
 function initiateModification(response: any): void {
-  currMsg = `Applying modifiers...`;
+  currMsg = chrome.i18n.getMessage("applyingModifiers");
   isDoneProcessing = false;
 
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: ModifierOptions = data.options;
     if (options == undefined) {
-      chrome.storage.sync.set({ "options": DEFAULT_OPTIONS })
+      chrome.storage.local.set({ "options": DEFAULT_OPTIONS })
       options = DEFAULT_OPTIONS
     }
     // console.log("Found options:")
@@ -224,7 +224,7 @@ function initiateModification(response: any): void {
 
     TextNodeTreeWalker(options);
 
-    currMsg = `Last applied modifiers at ${(new Date()).toLocaleTimeString()}`;
+    currMsg = chrome.i18n.getMessage("lastApplied", (new Date()).toLocaleTimeString());
     isDoneProcessing = true;
 
     response();

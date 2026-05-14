@@ -10,5 +10,71 @@
   "extActionDefaultTitle": {
     "message": "Éxécuter le lecteur demi-gras sur la page courante",
     "description": "Extension action default title."
+  },
+  "mainPage": {
+    "message": "Page principale du Lecteur demi-gras"
+  },
+  "apply": {
+    "message": "Appliquer les effets"
+  },
+  "noEffectStatus": {
+    "message": "Aucun effet n'est appliqué"
+  },
+  "modifiers": {
+    "message": "Modificateurs"
+  },
+  "modifierMsg": {
+    "message": "Précisez les modifications à porter au texte d'une page donnée. Les modificateurs on un effet combiné. Les caractères sont indexés à partir de un."
+  },
+  "addModifier": {
+    "message": "Ajouter un modificateur"
+  },
+  "selectEffect": {
+    "message": "Effet:"
+  },
+  "selectCharacters": {
+    "message": "Caractères:"
+  },
+  "applyingModifiers": {
+    "message": "Application de modificateurs en cours..."
+  },
+  "lastApplied": {
+    "message": "Dernière application de modificateurs à $TIME$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "11:15:00"
+      }
+    }
+  },
+
+  "bold": {
+    "message": "gras"
+  },
+  "italic": {
+    "message": "italique"
+  },
+  "underline": {
+    "message": "souligné"
+  },
+  "strikethrough": {
+    "message": "barré"
+  },
+
+  "percent": {
+    "message": "%"
+  },
+  "characters": {
+    "message": "caractères"
+  },
+
+  "alphabetic": {
+    "message": "alphabétique"
+  },
+  "numeric": {
+    "message": "numérique"
+  },
+  "alphanumeric": {
+    "message": "alphanumérique"
   }
 }

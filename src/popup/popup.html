@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Half-Bold Reader Main Page</title>
+        <title data-locale="mainPage">Half-Bold Reader Main Page</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="./popup.css">
     </head>
     <body>
         <header>
-            <div class="title">Half-Bold Reader</div>
+            <div class="title" data-locale="extName">Half-Bold Reader</div>
             <button class="settings" id="settings-btn" title="Go to modifier settings"></button>
         </header>
         <div class="main-content">
             <div class="loading-content" hidden>
                 <div class="loading"></div>
             </div>
-            <button id="embolden-btn"><b>Apply effects</b></button>
-            <p id="effect-status-msg">No effects applied</p>
+            <button id="embolden-btn"><b data-locale="apply">Apply effects</b></button>
+            <p id="effect-status-msg" data-locale="noEffectStatus">No effects applied</p>
         </div>
         <div class="settings-content" hidden>
             <button class="back-btn" id="settings-back-btn" title="Back to main menu"></button>
-            <h2>Modifiers</h2>
-            <p>Set the modifications (and their order) to be applied to all of the text on any given web page. The modifiers compound upon each other, executed in order from first to last.</p>
+            <h2 data-locale="noEffectStatus">Modifiers</h2>
+            <p data-locale="modifierMsg">Set the modifications (and their order) to be applied to all of the text on any given web page. The modifiers compound upon each other, executed in order from first to last.</p>
             
             <div class="row" id="modifiersList"></div>
             
-            <button class="" type="submit" id="add-btn" title="Add a modifier">Add Modifier</button>
+            <button class="" type="submit" id="add-btn" title="Add a modifier" data-locale="addModifier">Add Modifier</button>
         </div>
         
         <script defer src="../scripts/constants.js"></script>

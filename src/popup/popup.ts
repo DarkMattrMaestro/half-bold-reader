@@ -1,4 +1,11 @@
 
+// HTML Localization
+document.querySelectorAll("[data-locale]").forEach(elem => {
+  (elem as HTMLElement).innerText = chrome.i18n.getMessage(elem.getAttribute("data-locale")!)
+})
+
+
+
 function getCurrentTab(callback: Function) {
   let queryOptions = { active: true, lastFocusedWindow: true };
 
@@ -20,13 +27,13 @@ function processEffectStage(msg: string, isDoneProcessing: boolean) {
 const emboldenBtn = document.getElementById("embolden-btn");
 if (emboldenBtn) {
   emboldenBtn.onclick = function() {
-    processEffectStage(`Applying modifiers...`, false);
+    processEffectStage(chrome.i18n.getMessage("applyingModifiers"), false);
 
     getCurrentTab((tab: any) => {
       chrome.tabs.sendMessage(
         tab.id??0,
         {from: 'popup', subject: 'startEffect'},
-        () => { processEffectStage(`Last applied modifiers at ${(new Date()).toLocaleTimeString()}`, true); }
+        () => { processEffectStage(chrome.i18n.getMessage("lastApplied", (new Date()).toLocaleTimeString()), true); }
       )
     })
   }
@@ -39,7 +46,7 @@ function initializeEffectLoadingUI(res: {"msg": string, "isDoneProcessing": bool
 
 // Load from previous state
 getCurrentTab((tab: any) => {
-  processEffectStage(`Applying modifiers...`, false);
+  processEffectStage(`${chrome.i18n.getMessage("applyingModifiers")}`, false);
 
   chrome.tabs.sendMessage(
     tab.id??0,
@@ -52,11 +59,11 @@ getCurrentTab((tab: any) => {
 
 /////////////////////////////////
 
-function optionChoices(realValue: any, enumType: any, useName: boolean = false, expression?: (realValue: any, value: any) => boolean) {
+function optionChoices(realValue: any, enumType: any) {
   let res = "";
   for (let value in enumType) {
-    console.log(`Value: ${value}`);
-    res += `<option ${(expression??(() => realValue == value))(realValue, value) ? "selected" : ""} value="${value}">${useName ? value : enumType[value as keyof typeof enumType]}</option>`
+    console.log(`<option \${${realValue} == ${enumType[value as keyof typeof enumType]} ? "selected" : ""} value="${value}">${chrome.i18n.getMessage(value)}</option>`)
+    res += `<option ${realValue == enumType[value as keyof typeof enumType] ? "selected" : ""} value="${value}">${chrome.i18n.getMessage(value)}</option>`
   };
   return res
 }
@@ -73,13 +80,13 @@ function appendModifier(modifier: ModifierOption, index: number) {
     <div class="modifier-content">
       <div class="modifier-options">
         <div class="option">
-          <label for="effect">Effect:</label>
+          <label for="effect">${chrome.i18n.getMessage("selectEffect")}</label>
           <select class="effect" name="effect">
-            ${optionChoices(modifier.effect, TextEffectTypes, true)}
+            ${optionChoices(modifier.effect, TextEffectTypes)}
           </select>
         </div>
         <div class="option">
-          <label for="characters">Characters:</label>
+          <label for="characters">${chrome.i18n.getMessage("selectCharacters")}</label>
           <select class="group-characters" name="characters" disabled>
             ${optionChoices(modifier.groupCharacters, CharacterSets)}
           </select>
@@ -126,10 +133,8 @@ document.getElementById("add-btn")?.addEventListener("click", function(evt) { ad
 function getParentData(element: HTMLElement, dataName: string): string | null {
   let parent: HTMLElement = element;
   while (parent.getAttribute(dataName) == null && parent.parentElement != null) {
-    console.log("getAttribute: ", parent.getAttribute(dataName), " ; parentElement: ", parent.parentElement)
     parent = parent.parentElement;
   }
-  console.log("aaaaa  getAttribute: ", parent.getAttribute(dataName), " ; parentElement: ", parent.parentElement)
   return parent.getAttribute(dataName);
 }
 
@@ -147,10 +152,10 @@ function getPosition(element: HTMLElement): string | null {
 }
 
 function loadOptionsList() {
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: ModifierOptions = data.options;
     if (options === undefined) {
-      chrome.storage.sync.set({ "options": DEFAULT_OPTIONS })
+      chrome.storage.local.set({ "options": DEFAULT_OPTIONS })
       options = DEFAULT_OPTIONS
     }
 
@@ -226,7 +231,7 @@ function resizeSelect(select: HTMLSelectElement) {
 
 
 function deleteModifier(index: number) {
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: ModifierOptions | undefined = data.options;
     if (options == undefined) {
       options = DEFAULT_OPTIONS;
@@ -234,7 +239,7 @@ function deleteModifier(index: number) {
 
     options.modifiers.splice(index, 1);
 
-    chrome.storage.sync.set({ "options": options })
+    chrome.storage.local.set({ "options": options })
 
     loadOptionsList()
   })
@@ -242,7 +247,7 @@ function deleteModifier(index: number) {
 
 
 function addDefaultModifier() {
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: ModifierOptions | undefined = data.options;
     if (options == undefined) {
       options = DEFAULT_OPTIONS;
@@ -250,7 +255,7 @@ function addDefaultModifier() {
 
     options.modifiers.push(DEFAULT_OPTION);
 
-    chrome.storage.sync.set({ "options": options })
+    chrome.storage.local.set({ "options": options })
 
     loadOptionsList()
   })
@@ -258,11 +263,12 @@ function addDefaultModifier() {
 
 
 function updateStorage(value: any, index: number, firstKey: string, secondKey?: string) {
-  chrome.storage.sync.get("options", function(data) { // Get options
+  chrome.storage.local.get("options", function(data) { // Get options
     let options: any = data.options;
     if (options == undefined) {
       options = DEFAULT_OPTIONS
     }
+
 
     if (secondKey === undefined) {
       options.modifiers[index][firstKey] = value
@@ -271,6 +277,6 @@ function updateStorage(value: any, index: number, firstKey: string, secondKey?: 
     }
 
     // console.log(options)
-    chrome.storage.sync.set({ "options": options })
+    chrome.storage.local.set({ "options": options })
   })
 }

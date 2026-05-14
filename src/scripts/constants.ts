@@ -1,7 +1,7 @@
 
 
 enum MeasurementUnits {
-  percent="%",
+  percent="percent",
   characters="characters"
 }
 
