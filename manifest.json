@@ -13,8 +13,6 @@
   },
   "permissions": [
     "activeTab",
-    "scripting",
-    "management",
     "storage"
   ],
   "web_accessible_resources": [{
