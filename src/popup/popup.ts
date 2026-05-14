@@ -40,8 +40,13 @@ if (emboldenBtn) {
 }
 
 function initializeEffectLoadingUI(res: {"msg": string, "isDoneProcessing": boolean}) {
-  // console.log(res)
-  processEffectStage(res["msg"], res["isDoneProcessing"]);
+  if (!chrome.runtime.lastError) {
+    processEffectStage(res["msg"], res["isDoneProcessing"]);
+  } else {
+    (document.getElementsByClassName("refresh-error-content")[0] as HTMLElement).hidden = false;
+    (document.getElementsByClassName("main-content")[0] as HTMLElement).hidden = true;
+    (document.getElementsByClassName("settings-content")[0] as HTMLElement).hidden = true;
+  }
 }
 
 // Load from previous state

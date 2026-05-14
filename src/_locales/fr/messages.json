@@ -30,10 +30,10 @@
     "message": "Ajouter un modificateur"
   },
   "selectEffect": {
-    "message": "Effet:"
+    "message": "Effet :"
   },
   "selectCharacters": {
-    "message": "Caractères:"
+    "message": "Caractères :"
   },
   "applyingModifiers": {
     "message": "Application de modificateurs en cours..."
@@ -76,5 +76,12 @@
   },
   "alphanumeric": {
     "message": "alphanumérique"
+  },
+
+  "refreshTitle": {
+    "message": "Erreur : Essayez de rafraîchir la page"
+  },
+  "refreshMsg": {
+    "message": "Si le rafraîchissage de la page web ne rectifie pas le problème, la page web ne peut pas être modifiée par cette extension. Les paramêtres du navigateur sont une telle page."
   }
 }

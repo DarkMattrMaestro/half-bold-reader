@@ -131,6 +131,11 @@ header button.settings {
     margin: 0px;
 }
 
+.refresh-error-content {
+    margin: 0px;
+    padding: 0px;
+}
+
 .loading-content {
     position: relative;
     margin: 0px;
@@ -149,6 +154,7 @@ header button.settings {
 .loading {
     animation: spin 2s linear infinite;
 
+    cursor: not-allowed;
     display: block;
     background-size: 100%;
     position: absolute;
