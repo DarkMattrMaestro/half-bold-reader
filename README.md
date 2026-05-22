@@ -80,5 +80,5 @@ Licensed under [GNU GPLv2][github-license-link].
 [github-stars-shield]: https://img.shields.io/github/stars/DarkMattrMaestro/half-bold-reader?style=flat
 [github-stars-link]: https://github.com//DarkMattrMaestro/half-bold-reader/stargazers
 
-[github-license-shield]: https://img.shields.io/github/license/DarkMattrMaestro/half-bold-reader
+[github-license-shield]: https://img.shields.io/github/license/darkmattrmaestro/half-bold-reader
 [github-license-link]: https://github.com/DarkMattrMaestro/half-bold-reader/blob/main/LICENSE.md
