@@ -189,7 +189,7 @@ function clearPageStyling() {
   { // Remove elements added in previous processing attempts
     let element;
     while ((element = document.querySelector(`.${ADDED_ELEMENT_CLASSNAME}`)) != null) {
-      element.outerHTML = element.textContent;
+      element.outerHTML = element.textContent??"";
     }
   }
 
@@ -198,7 +198,7 @@ function clearPageStyling() {
     let element;
     for (const elemTag of ELEM_TAGS) {
       while ((element = document.querySelector(`${elemTag}`)) != null) {
-        element.outerHTML = element.textContent;
+        element.outerHTML = element.textContent??"";
       }
     }
   }
